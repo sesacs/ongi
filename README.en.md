@@ -4,6 +4,9 @@
 
 A LiveKit-powered voice AI agent framework that demonstrates how to build realtime conversational AI with MCP (Model Context Protocol) server integration.
 
+## Proposal
+- [2025 SeSAC Hackathon AI Service Proposal (PDF)](docs/2025년_새싹_해커톤_AI_서비스_기획서_최종.pdf)
+
 ## Features
 
 - 🎤 Natural voice conversations with low latency

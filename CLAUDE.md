@@ -37,7 +37,7 @@ uv run pytest -v --asyncio-mode=auto
 ```
 
 ### Required Python Version
-- **Python 3.9 or later required** - Check with `python --version`
+- **Python 3.11** - Check with `python --version`
 - All agent code must use async/await patterns
 
 ## 📦 Core Architecture Patterns
@@ -53,7 +53,7 @@ from livekit.plugins import openai, deepgram, cartesia, silero, noise_cancellati
 # Standard voice pipeline configuration
 session = AgentSession(
     stt=deepgram.STT(model="nova-2"),
-    llm=openai.LLM(model="gpt-4.1-mini"),
+    llm=openai.LLM(model="gpt-5.1-mini"),
     tts=cartesia.TTS(voice="f786b574-daa5-4673-aa0c-cbe3e8534c02"),
     vad=silero.VAD.load(),
     turn_detection="semantic"  # or "vad_based"
@@ -234,7 +234,7 @@ async def test_tool_calls():
 
 1. **Dockerfile**:
 ```dockerfile
-FROM python:3.11-slim
+FROM python:3.11
 WORKDIR /app
 COPY pyproject.toml uv.lock ./
 RUN pip install uv && uv sync --frozen
@@ -276,7 +276,7 @@ DEEPGRAM_API_KEY=your-deepgram-key
 # Start with these providers for best results
 session = AgentSession(
     stt=deepgram.STT(model="nova-2"),
-    llm=openai.LLM(model="gpt-4.1-mini"),
+    llm=openai.LLM(model="gpt-5.1-mini"),
     tts=openai.TTS(voice="echo")
 )
 ```
@@ -290,7 +290,7 @@ session = AgentSession(
 ## ⚠️ Common Gotchas
 
 ### Python Version
-- **MUST use Python 3.9+** - Earlier versions not supported
+- **MUST use Python 3.11** - Earlier versions not supported
 - Check with: `python --version`
 
 ### Async Patterns
