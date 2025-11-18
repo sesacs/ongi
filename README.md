@@ -1,323 +1,111 @@
-# LiveKit Voice Agent
+# LiveKit 음성 에이전트
 
-A LiveKit-powered voice AI agent framework that demonstrates how to build realtime conversational AI with MCP (Model Context Protocol) server integration.
+[한국어](README.md) | [English](README.en.md)
 
-## Features
+LiveKit 기반의 음성 AI 에이전트 예제로, MCP(Model Context Protocol) 서버 연동을 통해 실시간 대화형 AI를 구현합니다.
 
-- 🎤 Natural voice conversations with low latency
-- 🔄 Real-time voice interaction with interruption handling
-- 🛠️ Tool integration via MCP servers
-- 🎯 Multiple provider options (OpenAI, Deepgram, Cartesia, etc.)
-- 🔌 Extensible architecture for custom tools and agents
+## 주요 기능
+- 🎤 지연이 낮은 자연스러운 음성 대화
+- 🔄 중단 감지 및 이어 말하기가 가능한 실시간 상호작용
+- 🛠️ MCP 서버를 통한 툴 연동
+- 🎯 OpenAI, Deepgram, Cartesia 등 다양한 제공자 선택
+- 🔌 커스텀 툴/에이전트 확장이 용이한 구조
 
-## Prerequisites
-
+## 사전 준비
 - Python 3.11
-- API Keys:
-  - OpenAI API key
-  - Deepgram API key
-  - LiveKit credentials (optional - only if deploying to LiveKit Cloud)
+- API 키
+  - OpenAI API 키
+  - Deepgram API 키
+  - LiveKit 자격 증명(선택: LiveKit Cloud 배포 시)
 
-## Quick Start
-
-### 1. Install Dependencies
-
+## 빠른 시작
+### 1. 의존성 설치
 ```bash
-# Install dependencies using UV
 uv sync
 ```
 
-### 2. Set Up Environment Variables
-
-Copy `.env.example` to `.env` and fill in your credentials:
-
+### 2. 환경 변수 설정
+`.env.example`을 복사해 채워 넣습니다.
 ```bash
 cp .env.example .env
 ```
+필수:
+- `OPENAI_API_KEY`
+- `DEEPGRAM_API_KEY`
 
-**Required variables:**
-- `OPENAI_API_KEY` - OpenAI API key
-- `DEEPGRAM_API_KEY` - Deepgram API key
+옵션(LiveKit Cloud 배포):
+- `LIVEKIT_URL`
+- `LIVEKIT_API_KEY`
+- `LIVEKIT_API_SECRET`
 
-**Optional for LiveKit Cloud deployment:**
-- `LIVEKIT_URL` - LiveKit server URL
-- `LIVEKIT_API_KEY` - LiveKit API key
-- `LIVEKIT_API_SECRET` - LiveKit API secret
-
-### 3. Download Required Model Files
-
-Before first run, download the required model files (Silero VAD, turn detector):
-
+### 3. 필요 모델 파일 받기
 ```bash
-# Download model files for basic agent
+# 기본 에이전트용
 uv run python livekit_basic_agent.py download-files
 
-# Download model files for MCP agent
+# MCP 에이전트용
 uv run python livekit_mcp_agent.py download-files
 ```
 
-### 4. Run the Agent
-
+### 4. 실행
 ```bash
-# Basic agent (minimal configuration)
+# 기본 에이전트
 uv run python livekit_basic_agent.py console
 
-# MCP agent (with MCP server integration)
+# MCP 에이전트 (MCP 서버 연동)
 uv run python livekit_mcp_agent.py console
 
-# Development mode (connects to LiveKit - optional)
+# 개발 모드 (LiveKit 연결, 선택)
 uv run python livekit_basic_agent.py dev
 
-# Production mode
+# 프로덕션 모드
 uv run python livekit_basic_agent.py start
 ```
 
-## Architecture
+## 구성 요소
+### 음성 파이프라인 기본값
+- STT: Deepgram Nova-2
+- LLM: OpenAI GPT-5.1-mini (환경변수 `LLM_CHOICE`로 변경 가능)
+- TTS: OpenAI Echo
+- VAD: Silero VAD
+- 턴 감지: Multilingual Model
 
-```
-┌─────────────┐     ┌──────────────┐     ┌─────────────┐
-│   LiveKit   │──b─▶│ Voice Agent  │───▶│ MCP Servers │
-│   Client    │     │              │     │   (Tools)   │
-└─────────────┘     └──────────────┘     └─────────────┘
-                           │
-                    ┌──────┴──────┐
-                    │             │
-              ┌─────▼────┐  ┌────▼─────┐
-              │ Deepgram │  │  OpenAI  │
-              │   STT    │  │ LLM/TTS  │
-              └──────────┘  └──────────┘
-```
-
-## Project Files
-
-### Basic Agent
-
-**`livekit_basic_agent.py`** - The simplest possible LiveKit voice agent
-- Minimal configuration with only essential components
-- Great for learning and testing basic functionality
-- Requires only OpenAI and Deepgram API keys
-- Includes example tool: `get_current_date_and_time`
-
-### MCP Agent
-
-**`livekit_mcp_agent.py`** - Full-featured voice agent with:
-- Configurable speech-to-text, LLM, and text-to-speech providers
-- MCP server integration for tool calling
-- Multilingual turn detection
-- Event handling and state management
-- Logging and metrics support
-
-## Voice Pipeline Configuration
-
-The agent uses a modular voice pipeline with swappable components:
-
-### Speech-to-Text (STT)
-- **Default**: Deepgram Nova-2 (highest accuracy)
-- Alternatives: AssemblyAI, Azure Speech, Whisper
-
-### Large Language Model (LLM)
-- **Default**: OpenAI GPT-5.1-mini (fast, cost-effective)
-- Alternatives: Anthropic Claude, Google Gemini, Groq
-
-### Text-to-Speech (TTS)
-- **Default**: OpenAI Echo voice (natural, versatile)
-- Alternatives: Cartesia (fastest), ElevenLabs (highest quality)
-
-### Voice Activity Detection (VAD)
-- **Default**: Silero VAD (reliable voice detection)
-
-### Turn Detection
-- **Default**: Multilingual Model (natural conversation flow)
-- Alternatives: Semantic model, VAD-based
-
-## MCP Server Integration
-
-The agent supports integration with MCP (Model Context Protocol) servers for extending functionality with custom tools.
-
-### Configuring MCP Servers
-
-In `livekit_mcp_agent.py`:
-
+### MCP 서버 설정 예시 (`livekit_mcp_agent.py`)
 ```python
 session = AgentSession(
-    # ... other config ...
-    mcp_servers=[
-        mcp.MCPServerHTTP(url="http://localhost:8089/mcp")
-    ]
+    # ... 생략 ...
+    mcp_servers=[mcp.MCPServerHTTP(url="http://localhost:8089/mcp")],
 )
 ```
 
-### Adding Custom Tools
-
-You can also add tools directly to your agent using the `@function_tool` decorator:
-
+### 커스텀 툴 추가 예시
 ```python
-from livekit.agents import function_tool, RunContext
+from livekit.agents.llm import function_tool
 from datetime import datetime
 
 class Assistant(Agent):
     @function_tool
     async def get_current_time(self, context: RunContext) -> str:
-        """Get the current time."""
         return datetime.now().strftime("%I:%M %p")
 ```
 
-## Development
-
-### Project Structure
-
+## 프로젝트 구조
 ```
 livekit-agent/
-├── livekit_basic_agent.py   # Basic example agent
-├── livekit_mcp_agent.py     # MCP-enabled agent
-├── pyproject.toml           # Dependencies
-├── .env.example             # Environment template
-├── Dockerfile               # Container deployment
+├── livekit_basic_agent.py   # 기본 예제 에이전트
+├── livekit_mcp_agent.py     # MCP 연동 에이전트
+├── pyproject.toml           # 의존성
+├── .env.example             # 환경 변수 템플릿
+├── Dockerfile               # 컨테이너 배포 예시
 └── README.md
 ```
 
-### Installing Additional Providers
+## LiveKit Cloud 배포 개요
+1) [LiveKit Cloud](https://cloud.livekit.io/) 가입  
+2) LiveKit CLI 설치 (`winget install LiveKit.LiveKitCLI` / `brew install livekit` / `curl -sSL https://get.livekit.io/ | bash`)  
+3) `lk cloud auth`로 인증  
+4) `lk app env -w`로 환경 변수 설정  
+5) 에이전트 실행: `livekit_basic_agent.py dev/start` 또는 `livekit_mcp_agent.py console`  
 
-```bash
-# Additional TTS providers
-uv add livekit-plugins-cartesia livekit-plugins-elevenlabs
-
-# Additional LLM providers
-uv add livekit-plugins-anthropic livekit-plugins-google livekit-plugins-groq
-
-# Additional STT providers
-uv add livekit-plugins-assemblyai livekit-plugins-azure
-```
-
-## Deploy to LiveKit Cloud
-
-Once you've tested your agent locally, deploy it to LiveKit Cloud for production use:
-
-### 1. Create a LiveKit Cloud Account
-
-Sign up at [LiveKit Cloud](https://cloud.livekit.io/)
-
-### 2. Install the LiveKit CLI
-
-Choose the installation method for your platform:
-
-**Windows:**
-```bash
-winget install LiveKit.LiveKitCLI
-```
-
-**Mac:**
-```bash
-brew install livekit
-```
-
-**Linux:**
-```bash
-curl -sSL https://get.livekit.io/ | bash
-```
-
-### 3. Authenticate with LiveKit Cloud
-
-Open a new terminal and authenticate:
-
-```bash
-lk cloud auth
-```
-
-### 4. Configure Environment Variables
-
-Set up your environment variables for the cloud:
-
-```bash
-lk app env -w
-```
-
-This will write your LiveKit credentials to `.env.local`
-
-### 5. Start Your Agent
-
-Run your agent connected to LiveKit Cloud:
-
-```bash
-uv run python livekit_basic_agent.py start
-```
-
-### 6. Create an Agent in LiveKit Cloud
-
-In a separate terminal, register your agent:
-
-```bash
-lk agent create
-```
-
-### 7. Test in the Playground
-
-Visit the [LiveKit Agents Playground](https://agents-playground.livekit.io/) and sign in with your LiveKit organization to test your agent in the browser.
-
-### 8. Telephony Integration (Optional)
-
-To integrate your agent with phone calling systems, see the [LiveKit Telephony documentation](https://docs.livekit.io/agents/start/telephony/)
-
-## Performance Optimization
-
-### Reduce Latency
-- Use regional deployments close to users
-- Choose faster providers (Deepgram for STT, Cartesia for TTS)
-- Use streaming where possible
-
-### Scale Efficiently
-- Set appropriate prewarm counts in `livekit.toml` for production
-- Use connection pooling for external API calls
-- Implement caching for frequently accessed data
-
-## Console Mode Testing
-
-Console mode lets you test your agent locally without needing a LiveKit server:
-
-```bash
-# Test the basic agent
-uv run python livekit_basic_agent.py console
-
-# Test the MCP agent
-uv run python livekit_mcp_agent.py console
-```
-
-This will start an interactive console where you can speak to your agent using your microphone and speakers.
-
-## Troubleshooting
-
-### Python Version
-Ensure you're using Python 3.9 or later:
-```bash
-python --version
-```
-
-### Model Downloads
-TTS models may download on first use, which can take time. The Docker image pre-downloads Silero VAD to speed up startup.
-
-### API Key Issues
-- Verify all required API keys are set in `.env`
-- Check that API keys are valid and have sufficient credits
-- Ensure no extra whitespace in environment variable values
-
-### Audio Issues in Console Mode
-- Check microphone/speaker permissions
-- Verify audio devices are correctly configured
-- Try adjusting VAD sensitivity if voice detection is problematic
-
-## Environment Variables Reference
-
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `OPENAI_API_KEY` | Yes | OpenAI API key for LLM/TTS |
-| `DEEPGRAM_API_KEY` | Yes | Deepgram API key for STT |
-| `LIVEKIT_URL` | No | LiveKit server URL (for deployment) |
-| `LIVEKIT_API_KEY` | No | LiveKit API key (for deployment) |
-| `LIVEKIT_API_SECRET` | No | LiveKit API secret (for deployment) |
-| `LLM_CHOICE` | No | Model selection (default: gpt-4.1-mini) |
-| `LOG_LEVEL` | No | Logging level (default: INFO) |
-
-## Resources
-
-- [LiveKit Agents Documentation](https://docs.livekit.io/agents/)
-- [LiveKit Python SDK](https://github.com/livekit/agents)
+---
+더 자세한 설정 옵션과 최적화 팁은 영어 문서에서 확인하세요: [README.en.md](README.en.md)
