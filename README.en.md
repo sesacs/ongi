@@ -6,6 +6,7 @@ A LiveKit-powered voice AI agent framework that demonstrates how to build realti
 
 ## Proposal
 - [2025 SeSAC Hackathon AI Service Proposal (PDF)](docs/2025년_새싹_해커톤_AI_서비스_기획서_최종.pdf)
+- [Narrated audio (page 1 -> 2~3 -> 4 -> 5~7 -> 8~10 -> 11)](voice/기획서_스크립트_full.mp3)
 
 ## Features
 
