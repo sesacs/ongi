@@ -5,9 +5,9 @@
 A LiveKit-powered voice AI agent framework that demonstrates how to build realtime conversational AI with MCP (Model Context Protocol) server integration.
 
 ## Proposal
-- [2025 SeSAC Hackathon AI Service Proposal (PDF)](docs/2025년_새싹_해커톤_AI_서비스_기획서_최종.pdf)
+- [2025 SeSAC Hackathon AI Service Proposal (PDF)](docs/2025년_새싹_해커톤_AI_서비스_기획서_진짜최종.pdf?raw=1)
 - Narrated audio (page 1 → 2~3 → 4 → 5~7 → 8~10 → 11)
-  - [Play in browser](https://raw.githubusercontent.com/sesacs/ongi/main/docs/index.html)
+  - [Play in browser](https://htmlpreview.github.io/?https://raw.githubusercontent.com/sesacs/ongi/main/docs/index.html)
   - [Direct MP3 link](https://raw.githubusercontent.com/sesacs/ongi/main/voice/%EA%B8%B0%ED%9A%8D%EC%84%9C_%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8_full.mp3)
 
 ## Features
