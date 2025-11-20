@@ -6,7 +6,9 @@ LiveKit 기반의 음성 AI 에이전트 예제로, MCP(Model Context Protocol) 
 
 ## 기획서
 - [2025년 새싹 해커톤 AI 서비스 기획서 (PDF)](docs/2025년_새싹_해커톤_AI_서비스_기획서_최종.pdf)
-- [기획서 낭독 음성 (page 1 -> 2~3 -> 4 -> 5~7 -> 8~10 -> 11)](voice/기획서_스크립트_full.mp3)
+- 기획서 낭독 음성 (page 1 → 2~3 → 4 → 5~7 → 8~10 → 11)
+  - [웹에서 바로 재생](https://raw.githubusercontent.com/sesacs/ongi/main/docs/index.html)
+  - [MP3 직접 링크](https://raw.githubusercontent.com/sesacs/ongi/main/voice/%EA%B8%B0%ED%9A%8D%EC%84%9C_%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8_full.mp3)
 
 ## 주요 기능
 - 🎤 지연이 낮은 자연스러운 음성 대화
